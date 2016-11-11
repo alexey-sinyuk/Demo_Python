@@ -1,8 +1,4 @@
-from element import BasePageElement
-#from locators import LoginPageLocators
-#from locators import AdminPageLocators
 from locators import *
-
 
 class BasePage(object):
 
