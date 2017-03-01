@@ -38,6 +38,7 @@ class switch(object):
 class BaseTest(unittest.TestCase):
 
 	def setUp(self):
+		print ("setup ran")
 		for case in switch(profile):
 		    if case('chrome_local'):
 		        self.driver = webdriver.Remote(
@@ -67,7 +68,19 @@ class BaseTest(unittest.TestCase):
 		self.driver.implicitly_wait(10)
 
 	def tearDown(self):
+		print ("tearDown ran")
 		self.driver.close()
+
+	@staticmethod
+	def setUpClass():
+		print ("setUpClass")
+
+	@staticmethod
+	def tearDownClass():
+		print ("tearDownClass")
+
+	def setUpModule(self):
+		print ("setUpModule")
 
 class LoginFlowTests(BaseTest):
 
@@ -86,6 +99,19 @@ class LoginFlowTests(BaseTest):
 		login_page.to(base_url)
 		login_page.login_as("viewer_as", "P@ssw0rd")
 		assert main_page.at(), "Not logged into shop"
+
+	def test_cookie(self):
+		driver = self.driver
+		driver.get("http://www.google.com");
+		# Now set the cookie. This one's valid for the entire domain
+		#cookie = {"key": "value"}
+		#driver.add_cookie(cookie)
+		driver.add_cookie({'name' : 'foo', 'value' : 'bar', 'secure' : False})
+
+		# And now output all the available cookies for the current URL
+		all_cookies = driver.get_cookies()
+		for cookie_name, cookie_value in all_cookies[0].items():
+			print ("%s -> %s", cookie_name, cookie_value)
 
 
 if __name__ == "__main__":	
